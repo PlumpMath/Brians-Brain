@@ -1,23 +1,49 @@
 (ns brains-brain.core
-  (:require [seesaw.core :refer :all])
+  (:require [seesaw.core :refer :all]
+            [seesaw.graphics :refer [draw rect style]]
+            [seesaw.border :refer [line-border]]
+            [clojure.string :as str]
+            )
   (:gen-class))
 
 (native!)
 
+;; actual board size is 90 x 90
+(def board-size 180)
 
-(def main-frame
-  (frame :title "Brian's Brain" :on-close :exit))
+;; board size with grid
+(def size (+ 3 (* 2 (- board-size 1))))
 
-(def field-x (text "1"))
-(def field-y (text "2"))
 
-(def result-label (label ""))
+(defn draw-grid [c g]
+  (let [cellw 3
+        cellh 3
+        ]
+    (doseq [x (range 1 size 2)
+            y (range 1 size 2)]
+      (draw g
+            (rect x y 1 1)
+            (style :background :white ;; "#F03232"
+                   )
+            )
+      )))
 
-(config! main-frame :content
-         (border-panel
-          :north (horizontal-panel :items [field-x field-y])
-          :center result-label
-          :border 5))
+(defn make-ui
+  []
+  (config!
+   (frame :title "Brian's Brain" :on-close :exit)
+   :content (border-panel
+             :center (canvas :id :canvas
+                             ;; :size [270 :by 270]
+                             :size [ size :by size ]
+                             :background :black
+                             :border (line-border :thickness 2 :color :white)
+                             :paint draw-grid
+                             )
+             :border 5)
+   ))
+
 
 (defn -main [& args]
-  (-> main-frame pack! show!))
+  (let [ui (make-ui)]
+    (-> ui pack! show!)))
