@@ -8,21 +8,33 @@
 
 (native!)
 
+;; cell size
+(def cell-size 9)
+
 ;; actual board size is 90 x 90
-(def board-size 180)
+(def board-size 90)
 
 ;; board size with grid
-(def size (+ 3 (* 2 (- board-size 1))))
+(def size
+  (+ 1
+     (+ cell-size
+        (* (- cell-size 1)
+           (- board-size cell-size)
+           )
+        )
+     ;;(+ 3 (* 2 (- board-size 1)))
+     ))
 
+(println (str "size: " size))
 
 (defn draw-grid [c g]
   (let [cellw 3
         cellh 3
         ]
-    (doseq [x (range 1 size 2)
-            y (range 1 size 2)]
+    (doseq [x (range 1 size cell-size)
+            y (range 1 size cell-size)]
       (draw g
-            (rect x y 1 1)
+            (rect x y (dec cell-size))
             (style :background :white ;; "#F03232"
                    )
             )
@@ -37,7 +49,7 @@
                              ;; :size [270 :by 270]
                              :size [ size :by size ]
                              :background :black
-                             :border (line-border :thickness 2 :color :white)
+                             ;; :border (line-border :thickness 2 :color :white)
                              :paint draw-grid
                              )
              :border 5)
