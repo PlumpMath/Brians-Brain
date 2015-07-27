@@ -31,11 +31,13 @@
   (let [cellw 3
         cellh 3
         ]
-    (doseq [x (range 1 size cell-size)
-            y (range 1 size cell-size)]
+    (doseq [x (range 0 size cell-size)
+            y (range 0 size cell-size)]
       (draw g
-            (rect x y (dec cell-size))
+            ;;            (rect x y (dec cell-size))
+            (rect x y cell-size)
             (style :background :white ;; "#F03232"
+                   :foreground :black ; broader
                    )
             )
       )))
