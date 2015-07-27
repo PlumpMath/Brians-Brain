@@ -15,7 +15,8 @@
                  [compojure "1.3.4"]
                  [enlive "1.1.6"]
                  [org.omcljs/om "0.8.8"]
-                 [environ "1.0.0"]]
+                 [environ "1.0.0"]
+                 [seesaw "1.4.5"]]
 
   :plugins [[lein-cljsbuild "1.0.5"]
             [lein-environ "1.0.0"]]
@@ -73,4 +74,6 @@
                                             {:source-paths ["env/prod/cljs"]
                                              :compiler
                                              {:optimizations :advanced
-                                              :pretty-print false}}}}}})
+                                              :pretty-print false}}}}}}
+  :main brains-brain.core
+  :aot :all)
