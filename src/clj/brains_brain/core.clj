@@ -9,7 +9,7 @@
 (native!)
 
 ;; cell size
-(def cell-size 9)
+(def cell-size 6)
 
 ;; actual board size is 90 x 90
 (def board-size 90)
@@ -19,11 +19,7 @@
   (+ 1
      (+ cell-size
         (* (- cell-size 1)
-           (- board-size cell-size)
-           )
-        )
-     ;;(+ 3 (* 2 (- board-size 1)))
-     ))
+           (- board-size cell-size)))))
 
 (println (str "size: " size))
 
@@ -36,7 +32,8 @@
       (draw g
             ;;            (rect x y (dec cell-size))
             (rect x y cell-size)
-            (style :background :white ;; "#F03232"
+            (style :background (if (< (rand-int 100) 50) :white :black)
+                                        ; :white ;; "#F03232"
                    :foreground :black ; broader
                    )
             )
@@ -45,17 +42,19 @@
 (defn make-ui
   []
   (config!
-   (frame :title "Brian's Brain" :on-close :exit)
-   :content (border-panel
-             :center (canvas :id :canvas
-                             ;; :size [270 :by 270]
-                             :size [ size :by size ]
-                             :background :black
-                             ;; :border (line-border :thickness 2 :color :white)
-                             :paint draw-grid
-                             )
-             :border 5)
-   ))
+   (frame :title "Brian's Brain"
+          :on-close :exit
+          :resizable? false
+          :content (border-panel
+                    :center (canvas :id :canvas
+                                    ;; :size [270 :by 270]
+                                    :size [ size :by size ]
+                                    :background :black
+                                    ;; :border (line-border :thickness 2 :color :white)
+                                    :paint draw-grid
+                                    )
+                    :border 5)
+          )))
 
 
 (defn -main [& args]
