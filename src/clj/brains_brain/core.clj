@@ -2,8 +2,8 @@
   (:require [seesaw.core :refer :all]
             [seesaw.graphics :refer [draw rect style]]
             [seesaw.border :refer [line-border]]
-            [clojure.string :as str]
-            )
+            [clojure.string :as str])
+  (:use [clojure.pprint])
   (:gen-class))
 
 (native!)
@@ -23,6 +23,7 @@
 
 (println (str "size: " size))
 
+;; TODO: this function need a little modify to run on cljs
 (defn make-board
   []
   (let [board (make-array Integer/TYPE board-size board-size)]
@@ -31,8 +32,6 @@
       (aset-int board x y (if (< (rand-int 100) 50) 0 1))
       )
     board))
-(use 'clojure.pprint)
-
 
 (def a (make-board))
 
