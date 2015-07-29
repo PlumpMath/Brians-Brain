@@ -23,21 +23,56 @@
 
 (println (str "size: " size))
 
+(defn make-board
+  []
+  (let [board (make-array Integer/TYPE board-size board-size)]
+    (doseq [x (range 0 board-size)
+            y (range 0 board-size)]
+      (aset-int board x y (if (< (rand-int 100) 50) 0 1))
+      )
+    board))
+(use 'clojure.pprint)
+
+
+;;(make-indexed )
+
+(def a (make-board))
+(pprint a)
+(aget a 1 1)
+
 (defn draw-grid [c g]
-  (let [cellw 3
-        cellh 3
-        ]
+  (doseq [x (range 0 board-size)
+          y (range 0 board-size)
+          :let [cell (aget a x y)
+                xb (* x cell-size)
+                yb (* y cell-size)
+                ]]
+    (draw g
+          ;;            (rect x y (dec cell-size))
+          (rect xb yb cell-size)
+          (style :background (case cell
+                               1 :red
+                               :white)
+                                        ; :white ;; "#F03232"
+                 :foreground :black ; broader
+                 )
+          )
+    ))
+
+(comment
+  (defn draw-grid [c g]
     (doseq [x (range 0 size cell-size)
             y (range 0 size cell-size)]
       (draw g
             ;;            (rect x y (dec cell-size))
             (rect x y cell-size)
-            (style :background (if (< (rand-int 100) 50) :white :black)
+            (style :background :white
                                         ; :white ;; "#F03232"
                    :foreground :black ; broader
                    )
             )
-      )))
+      ))
+  )
 
 (defn make-ui
   []
