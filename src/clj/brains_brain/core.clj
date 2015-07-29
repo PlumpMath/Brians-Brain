@@ -29,8 +29,7 @@
   (let [board (make-array Integer/TYPE board-size board-size)]
     (doseq [x (range 0 board-size)
             y (range 0 board-size)]
-      (aset-int board x y (if (< (rand-int 100) 50) 0 1))
-      )
+      (aset-int board x y (if (< (rand-int 100) 50) 0 1)))
     board))
 
 (def a (make-board))
@@ -40,16 +39,14 @@
           y (range 0 board-size)
           :let [cell (aget a x y)
                 xb (* x cell-size)
-                yb (* y cell-size)
-                ]]
+                yb (* y cell-size)]]
     (draw g
           (rect xb yb cell-size)
           (style :background (case cell
-                               1 :red
-                               :white)
+                               :on :red
+                               :white) ; default (:off)
                  :foreground :black ; broader
                  ))))
-
 
 (defn make-ui
   []
