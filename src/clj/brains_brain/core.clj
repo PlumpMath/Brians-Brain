@@ -43,7 +43,7 @@
     (draw g
           (rect xb yb cell-size)
           (style :background (case cell
-                               :on :red
+                               1 :red
                                :white) ; default (:off)
                  :foreground :black ; broader
                  ))))
