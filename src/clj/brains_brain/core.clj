@@ -4,6 +4,7 @@
             [seesaw.border :refer [line-border]]
             [clojure.string :as str])
   (:use [clojure.pprint])
+  (:refer-clojure :exclude [make-array])
   (:gen-class))
 
 (native!)
@@ -39,7 +40,67 @@
       (aset board x y (if (< (rand-int 100) 50) :off :on)))
     board))
 
+(defn neighbors [[x y]]
+  (for [dx [-1 0 1]
+        dy (if (zero? dx)
+             [-1 1]
+             [-1 0 1])]
+    [(+ dx x) (+ dy y)]))
+
+
+(defn create-world
+  "Creates rectangular world with the specified width and height.
+  Optionally takes coordinates of living cells."
+  [w h & living-cells]
+  (vec (for [y (range w)]
+         (vec (for [x (range h)]
+                (if (contains? (first living-cells) [y x]) "X" " "))))))
+
+
+
+(defn create-world2
+  "Creates rectangular world with the specified width and height.
+  Optionally takes coordinates of living cells."
+  ([w h] (create-world2 w h #{}))
+  ([w h living-cells]
+   (for [y (range w)]
+     (for [x (range h)]
+       (if (contains? living-cells [y x]) :on :off)))))
+
+(def create-world
+  "Creates rectangular world with the specified width and height.
+  Optionally takes coordinates of living cells."
+  (fn self
+    ([w h] (self w h #{}))
+    ([w h living-cells]
+     (for [y (range w)]
+       (for [x (range h)]
+         (if (contains? living-cells [y x]) :on :off))))))
+
+
+(create-world2 4 4)
+(create-world2 4 4 #{[0 0], [1 1], [2 2], [3 3]})
+
+(first #{[0 0], [1 1], [2 2], [3 3]})
+(contains? #{[0 0], [1 1], [2 2], [3 3]} [ 1])
+
+(defn neighbours
+  "Determines all the neighbours of a given coordinate"
+  [[x y]]
+  (for [dx [-1 0 1] dy [-1 0 1] :when (not= 0 dx dy)]
+    [(+ dx x) (+ dy y)]))
+
+(neighbours [1 1])
+
+(frequencies (mapcat neighbors #{[1 1] [1 0]}))
+
+(def a (create-world2 4 4 #{[0 0], [1 1], [2 2], [3 3]}))
+
+(a [0 1])
+
 (def a (make-board))
+
+(mapcat neighbors a)
 
 (defn draw-grid [c g]
   (doseq [x (range 0 board-size)
